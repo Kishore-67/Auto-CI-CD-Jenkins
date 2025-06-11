@@ -14,7 +14,7 @@ promClient.collectDefaultMetrics();
 // Root route
 app.get('/', (req, res) => {
   counter.inc();
-  res.send(`<h1 style="color:teal;">Laxman!!!🚀</h1>`);
+  res.send(`<h1 style="color:teal;">hi!!!🚀</h1>`);
 });
 
 // Prometheus metrics route
