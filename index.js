@@ -34,78 +34,67 @@ const port = 5000;
 // Metrics setup
 const counter = new promClient.Counter({
   name: 'webapp_requests_total',
-  help: 'Total number of requests to the web app',
+  help: 'Total number of requests to the web app'
 });
 
 promClient.collectDefaultMetrics();
 
+// Root route with UI
 app.get('/', (req, res) => {
   counter.inc();
 
-  const html = `
+  res.send(`
     <html>
       <head>
-        <title>Node.js Monitoring App</title>
+        <title>DevOps App</title>
         <style>
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding: 50px;
-          }
-          h1 {
-            color: teal;
-          }
-          .content {
-            margin: 20px auto;
-            max-width: 600px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-          }
-          .btn {
-            background-color: teal;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            margin-top: 15px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-          }
-          a {
-            color: #1e90ff;
-            text-decoration: none;
-          }
+          body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
+          h1 { color: teal; }
+          pre { background: #eee; padding: 10px; border-radius: 5px; }
+          .step { margin: 10px 0; padding: 10px; background: #fff; border-left: 4px solid teal; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
         </style>
       </head>
       <body>
-        <div class="content">
-          <h1>🚀 Node.js Monitoring App</h1>
-          <p>This application is monitored using <strong>Prometheus</strong> metrics.</p>
-          <p>Every time you refresh this page, a request counter is incremented and exposed at <a href="/metrics" target="_blank">/metrics</a>.</p>
-          <p>Metrics collected include default system stats (CPU, memory, event loop lag) and custom counters.</p>
-          <form method="get" action="/">
-            <button class="btn" type="submit">Simulate Request 🔄</button>
-          </form>
-          <p style="margin-top: 20px;"><a href="/metrics" target="_blank">View Prometheus Metrics</a></p>
+        <h1>🚀 Welcome to Kishore's DevOps App</h1>
+        <p>This app shows how a complete CI/CD pipeline works using:</p>
+        <pre>
+GitHub -> Webhook -> Jenkins -> Docker Build -> Kubernetes (Minikube)
+        </pre>
+
+        <div class="step">
+          <strong>1️⃣ GitHub:</strong> Code is pushed to a GitHub repo.
         </div>
+        <div class="step">
+          <strong>2️⃣ Webhook:</strong> A webhook notifies Jenkins when code is pushed.
+        </div>
+        <div class="step">
+          <strong>3️⃣ Jenkins:</strong> Jenkins builds a Docker image and pushes it to DockerHub.
+        </div>
+        <div class="step">
+          <strong>4️⃣ Docker:</strong> Image is built and tagged as <code>kishore67/testapp:latest</code>.
+        </div>
+        <div class="step">
+          <strong>5️⃣ Kubernetes (Minikube):</strong> Jenkins deploys the image using <code>kubectl apply</code>.
+        </div>
+
+        <p>✅ App exposes:</p>
+        <ul>
+          <li><code>/</code> — This UI page</li>
+          <li><code>/metrics</code> — Prometheus-compatible metrics endpoint</li>
+        </ul>
+
+        <p>🔁 Requests so far: <strong>${counter.hashMap[''].value}</strong></p>
       </body>
     </html>
-  `;
-
-  res.send(html);
+  `);
 });
 
+// Prometheus metrics route
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', promClient.register.contentType);
   res.end(await promClient.register.metrics());
 });
 
 app.listen(port, () => {
-  console.log(`✅ App running at http://localhost:${port}`);
+  console.log(`App running at http://localhost:${port}`);
 });
