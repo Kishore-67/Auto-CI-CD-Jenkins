@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-node-container
-          image: mohammedsafik/nodeimg:latest
+          image: kishore67/testapp:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
