@@ -46,7 +46,7 @@ app.get('/', (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>DevOps</title>
+        <title>DevOps v2</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
           h1 { color: teal; }
