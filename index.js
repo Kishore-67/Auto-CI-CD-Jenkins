@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>CI/CD Automation - V:3.0</title>
+        <title>CI/CD Automation - V:3.1</title>
         <style>
           body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; color: #333; }
           h1 { color: teal; }
